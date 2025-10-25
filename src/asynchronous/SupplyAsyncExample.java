@@ -9,13 +9,22 @@ import java.util.function.Supplier;
 public class SupplyAsyncExample {
     public static void main(String[] args) {
         Supplier<String>  supplier = () -> {
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             System.out.println("Hello from Task 1::" + Thread.currentThread().getName());
             return "Hello from Task 1::" + Thread.currentThread().getName();
         };
         CompletableFuture<String> taskCompletableFuture = CompletableFuture.supplyAsync(supplier);
         System.out.println("Hello from Main::" + Thread.currentThread().getName());
-        String value = taskCompletableFuture.join();
-        System.out.println("Value 1::" + value);
+        final StringBuilder resultHolder = new StringBuilder();;
+//        String value = taskCompletableFuture.join();
+//        System.out.println("Value 1::" + value);
+        taskCompletableFuture.thenAccept(resultHolder::append);
+        taskCompletableFuture.join();
+        System.out.println("Value 1::" + resultHolder);
 
         Supplier<String> supplier2 = () -> {
             System.out.println("Hello from Task 2::" + Thread.currentThread().getName());
