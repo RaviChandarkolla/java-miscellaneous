@@ -106,9 +106,9 @@ Key points:
 In Java, generic classes and subtyping work a bit differently compared to regular class inheritance.
 
 Key Points:
-1) If S is a subtype of T, it does not imply that `GenericClass<S>` is a subtype of GenericClass<T>.
+1) If S is a subtype of T, it does not imply that `GenericClass<S>` is a subtype of `GenericClass<T>`.
 
-2) For example, even though Integer is a subtype of Number, List<Integer> is NOT a subtype of List<Number>.
+2) For example, even though Integer is a subtype of Number, `List<Integer>` is NOT a subtype of `List<Number>`.
    
 3) This is because generic classes are invariant in their type parameter by default.
 
@@ -121,6 +121,10 @@ class MyList<T> { /* ... */ }
 class MySpecializedList<T> extends MyList<T> { /* ... */ }
 
 ```
+
+Here, `MySpecializedList<T>` is a subtype of `MyList<T>` only if the type T matches between them.
+
+
 
 Example
 
@@ -147,7 +151,7 @@ This means nums can be a list of any subtype of Number.
 Summary:
 1) Generic classes are not covariant by default w.r.t. their type parameters.
 
-2) `GenericClass<S>` is not a subtype of GenericClass<T> even if S is a subtype of T.
+2) `GenericClass<S>` is not a subtype of `GenericClass<T>` even if S is a subtype of T.
 
 3) Subtyping applies normally to the raw generic class but type parameters must match exactly.
 
@@ -155,4 +159,89 @@ Summary:
 
 This characteristic helps maintain type safety in Java generics.
 
+***
+
+# Upper bound, lower bound wild cards and wild card capture
+
+In Java generics, wildcards provide flexibility when using parameterized types, especially for subtyping relationships. There are three key concepts related to wildcards: upper bounded wildcards, lower bounded wildcards, and wildcard capture. Here is a detailed explanation with examples:
+
+## Upper Bounded Wildcards `(<? extends T>)` 
+      1) Syntax: `List<? extends Number>`
+
+      2) It means the list can hold elements of any type that is a subclass (or the class itself) of T.
+
+      3) Used mainly when you want to read from a generic structure but not write (except null).
+
+      4) Ensures type safety by restricting the upper bound.
+
+```declarative
+public static double sum(List<? extends Number> list) {
+double sum = 0.0;
+for (Number n : list) {
+sum += n.doubleValue();
+}
+return sum;
+}
+
+List<Integer> ints = Arrays.asList(1, 2, 3);
+List<Double> doubles = Arrays.asList(1.1, 2.2, 3.3);
+
+System.out.println(sum(ints));    // Outputs 6.0
+System.out.println(sum(doubles)); // Outputs 6.6
+
+```
+1) You can pass List<Integer>, List<Double>, or List<Number> to this method.
+
+2) You cannot add elements to list inside the method because you don't know the exact subtype.
+
+## Lower Bounded Wildcards `(<? Super T>)` 
+
+1) Syntax: `List<? super Integer>`
+
+2) It means the list can hold elements of type T or any of its supertypes.
+
+3) Used mainly when you want to write to a generic structure safely.
+
+4) Allows adding elements of type T or its subclasses.
+
+Example:
+
+```declarative
+public static void addNumbers(List<? super Integer> list) {
+    list.add(10);
+    list.add(20);
+}
+
+List<Number> numberList = new ArrayList<>();
+addNumbers(numberList);  // Works
+
+List<Object> objectList = new ArrayList<>();
+addNumbers(objectList);  // Also works
+
+```
+1) You can safely add Integer values to lists of Number, Object, or Integer.
+
+2) You cannot safely read elements as Integer without casting because the list might be of type Object.
+
+## WildCard capture
+
+1) When you have a method that uses wildcards, sometimes you need to capture the unknown type to operate on it.
+2) When a generic method has a parameter with a wildcard like List<?>, the compiler doesn't know the exact type and restricts certain operations (like set).
+3) Wildcard capture is done by introducing a helper method that uses a type parameter to "capture" the wildcard type.
+4) This lets you manipulate generic structures with wildcards in a type-safe way.
+
+```declarative
+public static void copy(List<?> src, List<?> dest) {
+    copyHelper(src, dest); // capture the wildcard via helper
+}
+
+private static <T> void copyHelper(List<T> src, List<T> dest) {
+    for (T t : src) {
+        dest.add(t);
+    }
+}
+
+```
+1) Here, copyHelper captures the unknown wildcard type ? and uses a type parameter T.
+2) This pattern is widely applicable in frameworks, utility libraries, and APIs where generic types are passed with unknown parameter types.
 ***
