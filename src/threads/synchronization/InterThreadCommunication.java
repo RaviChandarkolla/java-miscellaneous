@@ -38,6 +38,7 @@ class SharedResource {
             }
             System.out.println("Producing...");
             ready = true;
+            Thread.sleep(5000);
             notify();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -59,13 +60,14 @@ class SharedResource {
 }
 
 public class InterThreadCommunication {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         SharedResource resource = new SharedResource();
 
         Thread producer = new Thread(resource::produce);
         Thread consumer = new Thread(resource::consume);
 
-        producer.start();
+
         consumer.start();
+        producer.start();
     }
 }
