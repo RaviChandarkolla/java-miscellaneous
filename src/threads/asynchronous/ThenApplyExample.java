@@ -1,4 +1,4 @@
-package asynchronous;
+package threads.asynchronous;
 
 import java.util.concurrent.CompletableFuture;
 
