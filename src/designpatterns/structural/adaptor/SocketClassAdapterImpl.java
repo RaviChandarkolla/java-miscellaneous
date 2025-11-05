@@ -1,6 +1,9 @@
 package designpatterns.structural.adaptor;
 
-//Class Adapter - This form uses java inheritance and extends the source interface, in our case Socket class.
+// The adapter design pattern is one of the structural design patterns and is used so that two unrelated interfaces
+// can work together. The object that joins these unrelated interfaces is called an adapter.
+
+// Class Adapter - This form uses java inheritance and extends the source interface, in our case Socket class.
 
 //Using inheritance for adapter pattern
 public class SocketClassAdapterImpl extends Socket implements SocketAdapter {
