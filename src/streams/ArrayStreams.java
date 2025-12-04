@@ -19,3 +19,18 @@ public class ArrayStreams {
         stream.forEach(System.out::println);
     }
 }
+
+
+/*
+*
+* Java Streams are powerful due to their functional, declarative, and optimized design that transforms complex
+* collection processing into concise, readable pipelines with automatic performance optimizations.
+*
+* | Feature       | Traditional Loops   | Streams              |
+| ------------- | ------------------- | -------------------- |
+| Lazy          | Process everything  | Only needed elements |
+| Parallel      | Manual threads      | Automatic multi-core |
+| Pipeline Opt. | Manual              | Fusion + reordering  |
+| Memory        | Intermediate arrays | On-demand processing |
+*
+* */
