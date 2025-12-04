@@ -26,6 +26,11 @@ public class ThreadJoinExample {
         }
 
         t2.start();  // Starts only after t1 is finished
+//        try {
+//            t2.join();  // Main thread waits for t2 to finish
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         System.out.println("Main thread ends.");
     }
 }
