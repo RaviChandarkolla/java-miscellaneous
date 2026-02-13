@@ -42,9 +42,9 @@ public class ComparatorExample {
     public static void main(String[] args) {
         List<Employee> employees = Arrays.asList(
                 new Employee("Alice", 3),
-                new Employee("Bob", 2)
-//                new Employee("Charlie", 8),
-//                new Employee("chaplin", 5)
+                new Employee("Bob", 2),
+                new Employee("Charlie", 8),
+                new Employee("chaplin", 5)
         );
 
         System.out.println("unSorted by age: " + employees);
